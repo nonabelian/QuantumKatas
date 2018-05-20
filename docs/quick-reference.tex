@@ -1,0 +1,255 @@
+%!TEX program=xelatex
+% This cheatsheet is based on the template
+% provided at https://gist.github.com/alexander-yakushev/c773543bf9a957749f79.
+\documentclass[10pt,english,landscape]{article}
+    \usepackage{multicol}
+    \usepackage{calc}
+    \usepackage[landscape]{geometry}
+    \usepackage{color,graphicx,overpic}
+    
+    % https://tex.stackexchange.com/a/192067
+    \usepackage{fontawesome}
+      \newfontfamily{\FA}{[FontAwesome.otf]}
+    
+    % Known issue in {fontspec}: https://github.com/wspr/fontspec/issues/312#issuecomment-342125206
+    % Since {fontspec} is included only when compiling with XeTeX, we guard
+    % our fix accordingly.
+    \usepackage{ifxetex}
+        \ifxetex
+            \let\latinencoding\relax
+            \usepackage{fontspec}
+            \setmainfont{Segoe UI}
+            \setmonofont{Consolas}
+        \fi
+    
+    % \usepackage[T1]{fontenc}
+    % \usepackage[bitstream-charter]{mathdesign}
+    \usepackage[utf8]{inputenc}
+    \usepackage{url}
+    \usepackage{amsfonts}
+    \usepackage{array,booktabs}
+    \usepackage{textcomp}
+    \usepackage[usenames,dvipsnames,table]{xcolor}
+    \usepackage[most]{tcolorbox}
+    \usepackage{menukeys}
+    \usepackage{tabularx}
+    \usepackage{multirow}
+    \usepackage{colortbl}
+    \usepackage{tikz}
+    \usepackage{environ}
+    \usepackage{braket}
+    
+    \usetikzlibrary{calc}
+    \pgfdeclarelayer{background}
+    \pgfdeclarelayer{foreground}
+    \pgfsetlayers{background,main,foreground}
+    
+    \geometry{top=-0.5cm,left=1cm,right=1cm,bottom=1cm}
+    
+    \pagestyle{empty} % Turn off header and footer
+    
+    % \renewcommand\rmdefault{phv} % Arial
+    % \renewcommand\sfdefault{phv} % Arial
+    
+    % Redefine section commands to use less space
+    \makeatletter
+    \renewcommand{\section}{\@startsection{section}{1}{0mm}%
+      {-1ex plus -.5ex minus -.2ex}%
+      {0.5ex plus .2ex}%x
+      {\normalfont\large\bfseries}}
+    \renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+      {-1explus -.5ex minus -.2ex}%
+      {0.5ex plus .2ex}%
+      {\normalfont\normalsize\bfseries}}
+    \renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+      {-1ex plus -.5ex minus -.2ex}%
+      {1ex plus .2ex}%
+      {\normalfont\small\bfseries}}
+    \makeatother
+    
+    \setcounter{secnumdepth}{0} % Don't print section numbers
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{0pt plus 0.5ex}
+    
+    \definecolor{TableHead}{rgb}{0.353, 0.329, 0.667}
+    \definecolor{TableRow}{rgb}{0.816, 0.812, 0.902}
+    
+    \NewEnviron{keysref}[1]{
+      % \begin{center}
+      \smallskip
+      \begin{tikzpicture}
+          \rowcolors{1}{}{TableRow}
+    
+          \node (tbl) [inner sep=0pt] {
+            \begin{tabular}{p{2.5cm}p{5.05cm}}
+              \rowcolor{TableHead}
+              \multicolumn{2}{l}{\normalsize\textbf{\color{white}{#1}}}\parbox{0pt}{\rule{0pt}{0.3ex+\baselineskip}}\\
+              \BODY
+              \arrayrulecolor{TableHead}\specialrule{.17em}{0em}{.2em}
+            \end{tabular}};
+          \begin{pgfonlayer}{background}
+            \draw[rounded corners=2pt,top color=TableHead,bottom color=TableHead, draw=white]
+            ($(tbl.north west)-(0,-0.05)$) rectangle ($(tbl.north east)-(0.0,0.15)$);
+            \draw[rounded corners=2pt,top color=TableHead,bottom color=TableHead, draw=white]
+            ($(tbl.south west)-(0.0,-0.11)$) rectangle ($(tbl.south east)-(-0.0,-0.02)$);
+          \end{pgfonlayer}
+        \end{tikzpicture}
+      % \end{center}
+    }
+    
+    % https://tex.stackexchange.com/a/102523
+    \newcommand{\forceindent}[1]{\leavevmode{\parindent=#1\indent}}
+    
+    %% CUSTOM NOTATION %%
+    
+    \newcommand{\qs}{Q\#}
+    \newcommand{\unixlike}{\hfill\faApple\faLinux}
+    \newcommand{\ctrllike}{\hfill\faWindows\faLinux}
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    \begin{document}
+    
+    \raggedright\
+    
+    % \begin{center}
+      \Large{\qs~Tutorial Quick Reference}
+    % \end{center}
+    
+    \footnotesize
+    \begin{multicols}{3}
+    
+      \section{Working with Tutorials}
+
+      \begin{keysref}{Command Line Basics}
+        Change directory    & \texttt{cd \emph{dirname}} \\
+        Go to home          & \texttt{cd \textasciitilde} \\
+        Go up one directory & \texttt{cd ..} \\
+        Make new directory  & \texttt{mkdir \emph{dirname}} \\
+        Open current \newline directory in VS Code & \texttt{code .} \\
+      \end{keysref}
+    
+      \begin{keysref}{Building Project and Running Tests}
+        Change directory to \newline project directory & \texttt{cd \emph{project-dir}} \\
+        Build solution                    & \texttt{dotnet build} \\
+        Run all unit tests                & \texttt{dotnet test} \\
+      \end{keysref}
+    
+      \begin{keysref}{VS Code Keyboard Shortcuts}
+        Open command \newline palette   & \keys{Ctrl + Shift + P} \ctrllike \newline
+                                          \keys{\cmd + \shift + P} \hfill\faApple \\
+        Show terminal                   & \keys{Ctrl + \`{}} \ctrllike \newline
+                                          \keys{\cmd + \`{}} \hfill\faApple \\
+        Open folder                     & \keys{Ctrl + K} then \keys{Ctrl + O} \ctrllike \newline
+                                          \keys{\cmd + K} then \keys{\cmd + O} \hfill\faApple \\
+      \end{keysref}
+    
+      \begin{keysref}{Documentation}
+        Quantum \newline Development Kit & \url{https://docs.microsoft.com/quantum} \\
+        \qs~ Language \newline Reference & \url{https://docs.microsoft.com/en-us/quantum/quantum-qr-intro} \\
+        \qs~ Library \newline Reference  & \url{https://docs.microsoft.com/en-us/qsharp/api/} \\
+      \end{keysref}
+      
+      \section{\qs~Language}
+    
+      \begin{keysref}{Primitive Types}
+        64-bit integers         & \texttt{Int}    \\
+        Double-precision floats & \texttt{Double} \\
+        Booleans                & \texttt{Bool}   \newline 
+                                  \texttt{true} or \texttt{false} \\
+        Qubits                  & \texttt{Qubit}  \\
+        Pauli operators         & \texttt{Pauli}  \newline
+                                  \texttt{PauliI}, \texttt{PauliX}, \texttt{PauliY}, or \texttt{PauliZ} \\
+        Measurement \newline results     & \texttt{Result} \newline
+                                  \texttt{Zero} or \texttt{One} \\
+        Sequences of \newline integers   & \texttt{Range}  \newline
+                                  e.g.: 1..10 or 5..-1..0 \\
+        Strings                 & \texttt{String} \\
+      \end{keysref}
+    
+      \columnbreak%\
+    
+      \section{\qs~Language (continued)}
+    
+      \begin{keysref}{Derived Types}
+        Arrays                  & \texttt{\emph{elementType}[]} \\
+        Tuples                  & \texttt{(\emph{type0}, \emph{type1}, ...)} \\
+        Functions               & \texttt{\emph{inputType} -> \emph{outputType}} \newline
+                                  e.g.: \texttt{ArcTan2 : (Double, Double) -> Double} \\
+        Operations              & \texttt{\emph{inputType} => \emph{outputType} : \emph{variants}} \newline
+                                  e.g.: \texttt{H : (Qubit => () : Adjoint, Controlled)} \\
+      \end{keysref}
+    
+      \begin{keysref}{Function and Operation Definitions}
+        Functions & \texttt{function \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} \{} \newline
+                    \texttt{\hphantom{....}// \emph{function body}} \newline
+                    \texttt{\}} \\
+        Operations & \texttt{operation \emph{Name}(\emph{in0} : \emph{type0}, ...) : \emph{returnType} \{} \newline
+                     \texttt{\hphantom{....}body \{ ... \}} \newline
+                     \texttt{\hphantom{....}adjoint \{ ... \}} \newline
+                     \texttt{\hphantom{....}controlled \{ ... \}} \newline
+                     \texttt{\hphantom{....}adjoint controlled \{ ... \}} \newline
+                     \texttt{\}} \\
+      \end{keysref}
+
+      \begin{keysref}{Calling w/ Functors}
+        Adjoint call & \texttt{(Adjoint \emph{Name})(\emph{operationInputs})} \\
+        Controlled \newline call & \texttt{(Controlled \emph{Name})(\emph{controlQubits}, \emph{operationInputs})} \\
+      \end{keysref}
+    
+      \begin{keysref}{Variables}
+        Declare immutable & \texttt{let \emph{name} = \emph{value}} \\
+        Declare mutable & \texttt{mutable \emph{name} = \emph{value}} \\
+        Update mutable & \texttt{set \emph{name} = \emph{value}} \\
+      \end{keysref}
+    
+      \begin{keysref}{Arrays}
+        Allocation           & \texttt{mutable \emph{name} = new \emph{Type}[\emph{length}]} \\
+        Length               & \texttt{Length(\emph{name})} \\
+        $i$th element \newline (0-based indexing) & \texttt{\emph{name}[i]} \\
+        Array literal        & \texttt{[\emph{value0}; \emph{value1}; ...]} \newline
+                               e.g.: \texttt{[true; false; true]} \\
+        Slicing (subarray)   & \texttt{let \emph{name} = \emph{name}[\emph{start}..\emph{end}]} \\
+      \end{keysref}
+    
+      \begin{keysref}{Control Flow}
+        For loop                   & \texttt{for (\emph{ind} in \emph{range}) \{ ... \}} \newline 
+                                     e.g.: \texttt{for (i in 0..N-1) \{ ... \}} \\
+        Repeat-until-success loop  & \texttt{repeat \{ ... \} \newline until \emph{condition} \newline fixup \{ ... \}} \\
+        Conditional \newline statement      & \texttt{if \emph{cond1} \{ ... \} \newline elif \emph{cond2} \{ ... \} \newline else \{ ... \}}\\
+      \end{keysref}
+    
+      \columnbreak%\
+      \section{Qubits and Operations on Qubits}
+    
+      \begin{keysref}{Qubits}
+        Allocation           & \texttt{using (\emph{name} = \emph{Qubit}[\emph{length}] \{} \newline
+                               \texttt{\hphantom{....}//} Qubits in \texttt{\emph{name}} start in $\ket{0}$. \newline
+                               \texttt{\hphantom{....}...} \newline
+                               \texttt{\hphantom{....}//} Qubits must be returned to $\ket{0}$. \newline
+                               \texttt{\}} \\
+      \end{keysref}
+    
+      \begin{keysref}{Standard Library Functions and Operations}
+        Pauli operations          & \texttt{I : (Qubit => ())} \newline
+                                    \texttt{X : (Qubit => ())} \newline
+                                    \texttt{Y : (Qubit => ())} \newline
+                                    \texttt{Z : (Qubit => ())} \\
+        Hadamard                  & \texttt{H : (Qubit => ())} \\
+        Controlled-NOT            & \texttt{CNOT : ((control : Qubit, \newline target : Qubit) => ())} \\
+        Measure one qubit in Pauli $Z$ basis & \texttt{M : Qubit => Result} \\
+        Perform joint measurement of qubits in given Pauli bases & \texttt{Measure : (Pauli[], Qubit[]) => Result} \\
+        Rotate about given Pauli axis   & \texttt{R : (Pauli, Double, Qubit) => ()} \\
+        Rotate about Pauli $X$, $Y$, $Z$ axes & \texttt{Rx : (Double, Qubit) => ()} \newline
+                                          \texttt{Ry : (Double, Qubit) => ()} \newline
+                                          \texttt{Rz : (Double, Qubit) => ()} \\
+        Reset qubit to $\ket{0}$     & \texttt{Reset : Qubit => ()} \\
+        Reset qubits to $\ket{0..0}$ & \texttt{ResetAll : Qubit[] => ()} \\
+        Apply a gate to each qubit   & \texttt{ApplyToEach : ((Qubit => ()), Qubit[]) => ()} \\
+        Display a log message & \texttt{Message : String -> ()} \\
+      \end{keysref}
+    
+    
+    \end{multicols}
+    
+\end{document} 

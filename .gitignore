@@ -1,0 +1,45 @@
+# Git ignore file for the Solid project
+
+# Build artifacts
+bin/
+obj/
+Documentation/Help/
+packages/
+src/simulation/Runtime/x64/
+*.obj
+*.dll
+*.pdb
+*.exe
+*.chm
+*.html
+Tests/build
+
+# test outputs
+TestResults/
+*.qxe
+
+# Random VS files
+*.suo
+*.vssscc
+*.vspscc
+UpgradeLog.htm
+.vs
+*.user
+
+# Random non-solution files
+*.user
+*.nupkg
+StyleCop.Cache
+*.sublime-workspace
+build_log.txt
+.DS_store
+
+# Q# code-behind files:
+*.g.cs
+
+# LaTeX intermediate files
+docs/*.aux
+docs/*.bbl
+docs/*.blg
+docs/*.log
+docs/*.synctex.gz
